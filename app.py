@@ -15,39 +15,54 @@ db = SQLAlchemy(app)
 
 
 class Student(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    firstname = db.Column(db.String(100), nullable=False)
-    lastname = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(80), unique=True, nullable=False)
-    age = db.Column(db.Integer)
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
-    bio = db.Column(db.Text)
+  id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+  firstname = db.Column(db.String(100), nullable=False)
+  lastname = db.Column(db.String(100), nullable=False)
+  email = db.Column(db.String(80), unique=True, nullable=False)
+  age = db.Column(db.Integer)
+  created_at = db.Column(db.DateTime(timezone=True),
+                         server_default=func.now())
+  bio = db.Column(db.Text)
 
-    def __repr__(self):
-        return f'<Student {self.firstname}>'
+  def __repr__(self):
+    return f'<Student {self.firstname}>'
 
 
 @app.route("/")
 def index():
-    students = Student.query.all()
-    return render_template('index.html', students=students)
-    # return "Home"
+  # students = Student.query.all()
+  # return render_template('index.html', students=students)
+  return "Home"
 
 
 @app.route("/students/", methods=["GET"])
 def students():
-    output = {}
-    students = Student.query.all()
-    for student in students:
-        output.update({"firstname": student.firstname,
-                       "lastname": student.lastname,
-                       "email": student.email,
-                       "age": student.age,
-                       "created_at": student.created_at,
-                       "bio": student.bio
-                       })
-    return output
+  output = {}
+  students = Student.query.all()
+  for student in students:
+    output.update({student.id: {"firstname": student.firstname,
+                                "lastname": student.lastname,
+                                "email": student.email,
+                                "age": student.age,
+                                "created_at": student.created_at,
+                                "bio": student.bio
+                                }})
+  return output
 
 
+@app.route("/student/", methods=["POST"])
+def student():
+  student: dict = request.json    # noqa
+  new_student = Student(firstname=student.get('firstname'),
+                        lastname=student.get('lastname'),
+                        email=student.get('email'),
+                        age=student.get('age'),
+                        bio=student.get('bio'))
+  db.session.add(new_student)
+  db.session.commit()
 
+  return f"added {new_student} successfully!"
+
+
+if __name__ == "__main__":
+  app.run()
