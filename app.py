@@ -50,8 +50,30 @@ def students():
   return output
 
 
-@app.route("/student/", methods=["POST"])
-def student():
+@app.route("/students/<int:student_id>/", methods=["GET"])
+def student_id(student_id):
+  student = Student.query.get_or_404(student_id)
+  return f"student_details: {student}"
+
+
+@app.route("/edit-student/<int:student_id>", methods=["POST"])
+def student_edit(student_id):
+  student = Student.query.get_or_404(student_id)
+  new_student: dict = request.json
+  student.firstname = new_student.get('firstname')
+  student.lastname = new_student.get('lastname')
+  student.email = new_student.get('email')
+  student.age = new_student.get('age')
+  student.bio = new_student.get('bio')
+
+  db.session.add(student)
+  db.session.commit()
+
+  return f"edited {student} successfully!"
+
+
+@app.route("/add-student/", methods=["POST"])
+def student_add():
   student: dict = request.json    # noqa
   new_student = Student(firstname=student.get('firstname'),
                         lastname=student.get('lastname'),
