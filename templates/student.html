@@ -1,0 +1,12 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+<div class="Student" style="color: rgb(0, 183, 250)">
+  <h2> Student </h2>
+  <div style="padding: 10px; background-color: rgb(105, 197, 12); margin: 20px">
+    <p style="font-size: 18px; color: rgb(0,0,0)">{{"firstname:{} lastname:{}".format(student.firstname, student.lastname)}}</p>
+  </div>
+</div>
+
+{%endblock%}

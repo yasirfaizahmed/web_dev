@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+
+{%block content%}
+
+<div class="Students" style="color: rgb(0, 183, 250)">
+  <h2> About Students</h2>
+</div>
+<div>
+  {%for student in all_students%}
+  <div style="padding: 10px; background-color: rgb(105, 197, 12); margin: 20px">
+    <p style="font-size: 18px">{{"firstname:{} lastname:{}".format(student.get('firstname'), student.get('lastname'))}}</p>
+  </div>
+  {%endfor%}
+</div>
+
+
+{%endblock%}

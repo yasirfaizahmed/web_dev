@@ -1,5 +1,6 @@
 import os
-from flask import Flask, render_template, request, url_for, redirect
+import datetime
+from flask import Flask, render_template, request, url_for, redirect, make_response, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 from sqlalchemy.sql import func
@@ -31,29 +32,29 @@ class Student(db.Model):
 @app.route("/")
 def index():
   # students = Student.query.all()
-  # return render_template('index.html', students=students)
-  return "Home"
+  return render_template('index.html')
+  # return "Home"
 
 
 @app.route("/students/", methods=["GET"])
 def students():
-  output = {}
+  output = []
   students = Student.query.all()
   for student in students:
-    output.update({student.id: {"firstname": student.firstname,
-                                "lastname": student.lastname,
-                                "email": student.email,
-                                "age": student.age,
-                                "created_at": student.created_at,
-                                "bio": student.bio
-                                }})
-  return output
+    output.append({"firstname": student.firstname,
+                   "lastname": student.lastname,
+                   "email": student.email,
+                   "age": student.age,
+                   "created_at": student.created_at,
+                   "bio": student.bio
+                   })
+  return render_template('students.html', all_students=output)
 
 
-@app.route("/students/<int:student_id>/", methods=["GET"])
-def student_id(student_id):
+@app.route("/student/<int:student_id>/", methods=["GET"])
+def student(student_id):
   student = Student.query.get_or_404(student_id)
-  return f"student_details: {student}"
+  return render_template('student.html', student=student)
 
 
 @app.route("/edit-student/<int:student_id>", methods=["POST"])

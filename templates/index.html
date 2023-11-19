@@ -1,22 +1,10 @@
-{% extends 'base.html' %}
+{%extends 'base.html'%}
 
-{% block content %}
-    <h1 class="title">{% block title %} Students {% endblock %}</h1>
-    <div class="content">
-        {% for student in students %}
-            <div class="student">
-                <p><b>#{{ student.id }}</b></p>
-                <b>
-                    <p class="name">{{ student.firstname }} {{ student.lastname }}</p>
-                </b>
-                <p>{{ student.email }}</p>
-                <p>{{ student.age }} years old.</p>
-                <p>Joined: {{ student.created_at }}</p>
-                <div class="bio">
-                    <h4>Bio</h4>
-                    <p>{{ student.bio }}</p>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-{% endblock %}
+{%block content%}
+  <div class="Index" style="color: rgb(200, 0,0)">
+    <h1>{%block title%} Index {%endblock%}</h1>
+  </div>
+  <hr>
+  <h3> Nothing much here, this is index</h3>
+
+{%endblock%}
