@@ -75,6 +75,7 @@ def student_edit(student_id):
 
 @app.route("/add-student/", methods=["POST"])
 def student_add():
+  db.create_all()
   student: dict = request.json    # noqa
   new_student = Student(firstname=student.get('firstname'),
                         lastname=student.get('lastname'),
